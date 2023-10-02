@@ -49,6 +49,6 @@ principalsDF = principalsDF.drop('job', axis=1)
 principalsDF = principalsDF.drop('characters', axis=1)
 
 # Trim ratings by removing numVotes
-ratingsDF = pd.read_csv(filepath+foldernames[4]+filename, sep="\t")
+ratingsDF = pd.read_csv(filepath+foldernames[5]+filename, sep="\t")
 
 ratingsDF = ratingsDF.drop('numVotes', axis=1)
