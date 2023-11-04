@@ -69,8 +69,10 @@ movieDF = movieDF.drop_duplicates(subset='tconst')
 print(movieDF)
 movieDF.to_csv("movie_data.tsv", index=False, sep="\t")
 
+principalsDF = principalsDF.loc[principalsDF['tconst'].isin(movieDF['tconst'])]
 principalsDF.to_csv("principals_data.tsv", index=False, sep="\t")
 print(principalsDF.shape)
 
+nBasicsDF = nBasicsDF.loc[nBasicsDF['nconst'].isin(principalsDF['nconst'])]
 nBasicsDF.to_csv("name_data.tsv", index=False, sep="\t")
 print(nBasicsDF.shape)
