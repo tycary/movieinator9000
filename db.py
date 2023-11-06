@@ -66,35 +66,28 @@ def fuzzy_search_by_title(db, document: str, title: str, tolerance: int) -> list
     return list(collection.find(query))
 
 
-def find_related_movies(db, movie_id: str) -> list:
+def find_people_that_work_on_movie(db, movie_id: str) -> list:
     collection = db["Movies_people_link"]
-    movie_collection = db["Movies"]
-    movie_persons = list(collection.find({"tconst": movie_id}))
-    related_movies = []
-    for person in movie_persons:
-        person_id = person["nconst"]
-        person_movies = list(collection.find({"nconst": person_id}))
-        for person_movie in person_movies:
-            related_movie_id = person_movie["tconst"]
-            related_movie = movie_collection.find_one({"tconst": related_movie_id})
-            if related_movie:
-                related_movies.append(related_movie)
-            if len(related_movies) >= 10: break
-        if len(related_movies) >= 10: break
-    return related_movies
+    return  list(collection.find({"tconst": movie_id}))
+
+def find_other_movies_for_persion(db, person_id: str) -> list:
+    collection = db["Movies_people_link"]
+    return  list(collection.find({"nconst": person_id}).limit(5))
+
 
 def main():
-    # print(search_for_row_by_attribute(connect_db(), "Movies", "originalTitle", "Miss Jerry"))
+    print("\nFirst ouput +++")
+    print(search_for_row_by_attribute(connect_db(), "Movies", "originalTitle", "Miss Jerry"))
+    
+    print("\nSecond ouput +++")
     print(count_movies_in_year(connect_db(), "Movies", 2017))
-    print(average_runtime_in_year(connect_db(), "Movies", 2017))
-    # print(fuzzy_search_by_title(connect_db(), "Movies", "Miss Jeray", 1))
 
-    movie_id = "tt0000001" 
-    related_movies = find_related_movies(connect_db(), movie_id)
-    for movie in related_movies:
-        print("Title:", movie["originalTitle"])
-        print("Year:", movie["startYear"])
-        print("-----")
+    print("\nThird ouput +++")
+    print(average_runtime_in_year(connect_db(), "Movies", 2017))
+
+    print("\nFourth output +++")
+    director = find_people_that_work_on_movie(connect_db(), "tt0000001")[1]
+    print(find_other_movies_for_persion(connect_db(), director["nconst"]))
 
 
 if __name__ == "__main__":
