@@ -9,9 +9,6 @@ class MovieSelectionApp:
         # Set the default window size to 1920x1080 pixels
         self.root.geometry("1920x1080")
 
-        # Center the main window on the screen
-        self.root.eval('tk::PlaceWindow %s center' % self.root.winfo_pathname(self.root.winfo_id()))
-
         # Manually set dark theme colors
         self.root.configure(bg="#36393f")  # Discord's dark theme background color
 
