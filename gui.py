@@ -4,7 +4,7 @@ from tkinter import ttk  # Import ttk for themed widgets
 class MovieSelectionApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Movie Selection App")
+        self.root.title("Movieinator9000")
 
         # Set the default window size to 1920x1080 pixels
         self.root.geometry("1920x1080")
