@@ -23,7 +23,7 @@ class MovieSelectionApp:
         default_font = ("Helvetica", 12)
         button_font = ("Helvetica", 14)
         generate_font = ("Helvetica", 12)
-        
+
         # Configure style for Listbox
         self.style.configure("TListbox", background="#2c2f33", fieldbackground="#2c2f33", foreground="#ffffff", selectbackground="#7289da", selectforeground="#ffffff", font=default_font)
 
