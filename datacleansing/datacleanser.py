@@ -61,18 +61,20 @@ ratingsDF.set_index('tconst')
 
 ratingsDF = ratingsDF.drop('numVotes', axis=1)
 
-# Merge movie tables
+# Merge movie tables into movie dataframe
 movieDF = pd.merge(tBasicsDF, akasDF, left_on='tconst', right_on='titleId')
 movieDF = movieDF.drop('titleId', axis=1)
 movieDF = pd.merge(movieDF,crewDF)
 movieDF = movieDF.drop_duplicates(subset='tconst')
-print(movieDF)
 movieDF.to_csv("moviedata/output/movie_data.tsv", index=False, sep="\t")
+print(movieDF.shape)
 
+# Trim principals dataframe using movie dataframe
 principalsDF = principalsDF.loc[principalsDF['tconst'].isin(movieDF['tconst'])]
 principalsDF.to_csv("moviedata/output/principals_data.tsv", index=False, sep="\t")
 print(principalsDF.shape)
 
+# Trim name basics dataframe using principals dataframe
 nBasicsDF = nBasicsDF.loc[nBasicsDF['nconst'].isin(principalsDF['nconst'])]
 nBasicsDF.to_csv("moviedata/output/name_data.tsv", index=False, sep="\t")
 print(nBasicsDF.shape)
