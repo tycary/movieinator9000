@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk  # Import ttk for themed widgets
+from tkinter import messagebox
 
 class MovieSelectionApp:
     def __init__(self, root):
@@ -36,6 +37,7 @@ class MovieSelectionApp:
         # Left Listbox for Search Results
         self.results_listbox = tk.Listbox(root, selectmode=tk.SINGLE, width=60, height=20, bg="#2c2f33", fg="#ffffff", selectbackground="#7289da", selectforeground="#ffffff", font=button_font)
         self.results_listbox.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+        self.results_listbox.bind("<Double-Button-1>", self.show_details)
 
         # Right Listbox for Selected Movies
         self.selected_listbox = tk.Listbox(root, selectmode=tk.SINGLE, width=60, height=20, bg="#2c2f33", fg="#ffffff", selectbackground="#7289da", selectforeground="#ffffff", font=button_font)
@@ -52,6 +54,10 @@ class MovieSelectionApp:
         
         move_left_button = tk.Button(button_frame, text="<--", command=self.move_left, bg="#7289da", fg="#ffffff", width=button_size[0], height=button_size[1])
         move_left_button.grid(row=1, column=0, pady=10, sticky="nsew")
+
+        # More Details Button
+        details_button = tk.Button(root, text="More Details", command=self.show_details, bg="#7289da", fg="#ffffff", font=default_font)
+        details_button.grid(row=2, column=1, pady=10, sticky="ew")
 
         # Generate Button
         generate_button = tk.Button(root, text="Generate List", command=self.generate_list, bg="#7289da", fg="#ffffff", font=generate_font)
@@ -100,11 +106,29 @@ class MovieSelectionApp:
             self.results_listbox.insert(tk.END, selected_movie)
             self.selected_listbox.delete(selected_index)
 
+    def show_details(self, event=None):
+        # Display more details for the selected movie
+        selected_index = self.results_listbox.curselection()
+        if selected_index:
+            selected_movie = self.results_listbox.get(selected_index)
+            messagebox.showinfo("Movie Details", f"Details for {selected_movie}")
+
     def generate_list(self):
         # Get selected movies on the right side and compile them into a list
         selected_movies = list(self.selected_listbox.get(0, tk.END))
-        print("Generated List:", selected_movies)
-        # Add further processing or saving logic here
+        # Display a new window with the list of generated movies
+        self.show_generated_list(selected_movies)
+
+    def show_generated_list(self, movies):
+        # Display a new window with the list of generated movies
+        new_window = tk.Toplevel(self.root)
+        new_window.title("Generated Movie List")
+
+        listbox = tk.Listbox(new_window, selectmode=tk.SINGLE, width=60, height=20, bg="#2c2f33", fg="#ffffff", selectbackground="#7289da", selectforeground="#ffffff", font=("Helvetica", 12))
+        listbox.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+
+        for movie in movies:
+            listbox.insert(tk.END, movie)
 
 if __name__ == "__main__":
     root = tk.Tk()
